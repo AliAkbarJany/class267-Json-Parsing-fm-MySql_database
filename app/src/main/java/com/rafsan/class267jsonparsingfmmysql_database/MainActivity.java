@@ -157,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
             textEmail.setText(email);
             textId.setText(id);
 
+            //======================= Update data=======================
+            //======================= Update data=======================
             buttonUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -164,6 +166,45 @@ public class MainActivity extends AppCompatActivity {
                     String phone = edMobile.getText().toString();
                     String email = edEmail.getText().toString();
                     String url = "https://ali71.000webhostapp.com/apps/update.php?id="+id+"&name="+name+"&phone="+phone+"&email="+email;
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+
+                            progressBar.setVisibility(View.GONE);
+
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Server Response")
+                                    .setMessage(response)
+                                    .show();
+// ================================Function Call===================================
+                            loadData();
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                            Log.d("updateRes",error.toString());
+
+                        }
+                    });
+
+                    RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                    queue.add(stringRequest);
+                }
+            });
+
+            //======================= Delete data=======================
+            //======================= Delete data=======================
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String url = "https://ali71.000webhostapp.com/apps/delete.php?id="+id;
 
                     progressBar.setVisibility(View.VISIBLE);
 
